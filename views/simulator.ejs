@@ -1,0 +1,197 @@
+<%- include('partials/header', { title: 'Net Yield Simulator - Emerald Stay' }) %>
+
+<main class="main-content">
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header bg-emerald text-dark">
+                    <h2 class="mb-0"><i class="bi bi-calculator"></i> Net Yield Return Simulator</h2>
+                </div>
+                <div class="card-body p-4">
+                    <% if (errors && errors.length > 0) { %>
+                        <div class="alert alert-danger" role="alert">
+                            <h5 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Please fix the following errors:</h5>
+                            <ul class="mb-0">
+                                <% errors.forEach(error => { %>
+                                    <li><%= error.msg %></li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>
+
+                    <% if (results && results.saved) { %>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="bi bi-check-circle"></i> Simulation saved successfully!
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <% } %>
+
+                    <form id="simulatorForm" method="POST" action="/simulator" novalidate>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="purchasePrice" class="form-label">
+                                    Purchase Price (€) <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-currency-euro"></i></span>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="purchasePrice" 
+                                        name="purchasePrice" 
+                                        step="0.01" 
+                                        min="0" 
+                                        required
+                                        value="<%= data && data.purchasePrice ? data.purchasePrice : '' %>"
+                                    >
+                                </div>
+                                <div class="form-text">Enter the total purchase price of the property</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="monthlyRent" class="form-label">
+                                    Monthly Rent (€) <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar-month"></i></span>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="monthlyRent" 
+                                        name="monthlyRent" 
+                                        step="0.01" 
+                                        min="0" 
+                                        required
+                                        value="<%= data && data.monthlyRent ? data.monthlyRent : '' %>"
+                                    >
+                                </div>
+                                <div class="form-text">Expected monthly rental income</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="annualRentalFee" class="form-label">
+                                    Annual Rental Fee (€) <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-calendar-year"></i></span>
+                                    <input 
+                                        type="number" 
+                                        class="form-control" 
+                                        id="annualRentalFee" 
+                                        name="annualRentalFee" 
+                                        step="0.01" 
+                                        min="0" 
+                                        required
+                                        value="<%= data && data.annualRentalFee ? data.annualRentalFee : '' %>"
+                                    >
+                                </div>
+                                <div class="form-text">Annual management or service fees</div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">
+                                    Email Address <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input 
+                                        type="email" 
+                                        class="form-control" 
+                                        id="email" 
+                                        name="email" 
+                                        required
+                                        value="<%= data && data.email ? data.email : '' %>"
+                                    >
+                                </div>
+                                <div class="form-text">We'll save your simulation results</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-emerald btn-lg w-100 text-dark">
+                                <i class="bi bi-calculator"></i> Calculate Net Yield
+                            </button>
+                        </div>
+                    </form>
+
+                    <% if (results) { %>
+                        <hr class="my-4">
+                        <h4 class="mb-4"><i class="bi bi-graph-up"></i> Calculation Results</h4>
+                        
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h6 class="text-muted mb-2">Monthly Net Income</h6>
+                                        <h3 class="text-emerald mb-0">€<%= results.monthlyNetIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></h3>
+                                        <small class="text-muted">After Year 1 commission (30%)</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mb-3">3-Year Return Breakdown</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead class="table-emerald">
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Commission Rate</th>
+                                        <th>Net Income</th>
+                                        <th>Annual Return (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Year 1</strong></td>
+                                        <td>30%</td>
+                                        <td>€<%= results.year1NetIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                        <td><span class="badge bg-emerald"><%= results.year1Return.toFixed(2) %>%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Year 2</strong></td>
+                                        <td>25%</td>
+                                        <td>€<%= results.year2NetIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                        <td><span class="badge bg-emerald"><%= results.year2Return.toFixed(2) %>%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Year 3</strong></td>
+                                        <td>20%</td>
+                                        <td>€<%= results.year3NetIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                        <td><span class="badge bg-emerald"><%= results.year3Return.toFixed(2) %>%</span></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="table-emerald">
+                                    <tr>
+                                        <th colspan="3">Total 3-Year Return</th>
+                                        <th><span class="badge bg-dark"><%= results.total3YearReturn.toFixed(2) %>%</span></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <% if (results.dataDrivenPrediction !== null && results.dataDrivenPrediction !== undefined) { %>
+                            <div class="alert alert-info mt-4">
+                                <h5 class="alert-heading"><i class="bi bi-graph-up-arrow"></i> Data-Driven Prediction</h5>
+                                <p class="mb-2">Based on historical data analysis from our property database:</p>
+                                <h4 class="mb-0">3-Year Predicted Return: <strong><%= results.dataDrivenPrediction.toFixed(2) %>%</strong></h4>
+                                <small class="text-muted">This prediction considers historical occupancy rates and location factors</small>
+                            </div>
+                        <% } %>
+
+                        <div class="mt-4">
+                            <button type="button" class="btn btn-outline-emerald text-dark" onclick="document.getElementById('simulatorForm').reset(); window.location.reload();">
+                                <i class="bi bi-arrow-clockwise"></i> New Calculation
+                            </button>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+<%- include('partials/footer') %>
+

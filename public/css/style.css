@@ -1,0 +1,128 @@
+/* Emerald Stay Brand Colors */
+:root {
+    --emerald-primary: #efe7e3;
+    --emerald-dark: #efe7e3;
+    --emerald-light: #efe7e3;
+    --emerald-lighter: #efe7e3;
+}
+
+/* Background color for emerald sections */
+.bg-emerald {
+    background-color: var(--emerald-primary) !important;
+}
+
+.btn-emerald {
+    background-color: var(--emerald-primary);
+    border-color: var(--emerald-primary);
+    color: white;
+}
+
+.btn-emerald:hover {
+    background-color: var(--emerald-dark);
+    border-color: var(--emerald-dark);
+    color: white;
+}
+
+.btn-outline-emerald {
+    color: var(--emerald-primary);
+    border-color: var(--emerald-primary);
+}
+
+.btn-outline-emerald:hover {
+    background-color: var(--emerald-primary);
+    border-color: var(--emerald-primary);
+    color: white;
+}
+
+.text-emerald {
+    color: var(--emerald-primary) !important;
+}
+
+.table-emerald {
+    background-color: var(--emerald-primary);
+    color: white;
+}
+
+/* Navbar styling */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    margin-right: 0.5rem;
+}
+
+/* Card styling */
+.card {
+    border-radius: 0;
+    box-shadow: none !important;
+    border: 1px solid #38383848;
+}
+
+.card-header {
+    border-radius: 0 !important;
+    font-weight: 600;
+}
+
+/* Form styling */
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.input-group-text {
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+
+.form-control:focus {
+    border-color: var(--emerald-primary);
+    box-shadow: 0 0 0 0.2rem rgba(16, 185, 129, 0.25);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+}
+
+/* Badge styling */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content area - grows to fill available space, ensuring page is at least 100vh */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Loading state */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+

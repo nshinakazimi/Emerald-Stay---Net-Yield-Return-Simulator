@@ -1,0 +1,72 @@
+<%- include('../partials/header', { title: 'Admin - Simulations List' }) %>
+
+<main class="main-content">
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1><i class="bi bi-list-ul"></i> All Simulations</h1>
+        <a href="/simulator" class="btn btn-emerald">
+            <i class="bi bi-plus-circle"></i> New Simulation
+        </a>
+    </div>
+
+    <% if (typeof error !== 'undefined' && error) { %>
+        <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle"></i> <%= error %>
+        </div>
+    <% } %>
+
+    <% if (simulations.length === 0) { %>
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle"></i> No simulations found.
+        </div>
+    <% } else { %>
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-emerald">
+                            <tr>
+                                <th>Date</th>
+                                <th>Email</th>
+                                <th>Purchase Price</th>
+                                <th>Monthly Rent</th>
+                                <th>Monthly Net Income</th>
+                                <th>3-Year Return</th>
+                                <th>Prediction</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% simulations.forEach(sim => { %>
+                                <tr>
+                                    <td><%= new Date(sim.createdAt).toLocaleDateString() %></td>
+                                    <td><%= sim.email %></td>
+                                    <td>€<%= sim.purchasePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                    <td>€<%= sim.monthlyRent.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                    <td>€<%= sim.monthlyNetIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                                    <td><span class="badge bg-emerald"><%= sim.total3YearReturn.toFixed(2) %>%</span></td>
+                                    <td>
+                                        <% if (sim.dataDrivenPrediction !== null && sim.dataDrivenPrediction !== undefined) { %>
+                                            <span class="badge bg-info"><%= sim.dataDrivenPrediction.toFixed(2) %>%</span>
+                                        <% } else { %>
+                                            <span class="text-muted">N/A</span>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/<%= sim._id %>" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
+</main>
+
+<%- include('../partials/footer') %>
+

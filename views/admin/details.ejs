@@ -1,0 +1,98 @@
+<%- include('../partials/header', { title: 'Simulation Details' }) %>
+
+<main class="main-content">
+<div class="container my-5">
+    <div class="mb-4">
+        <a href="/admin" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to List
+        </a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-emerald text-white">
+            <h3 class="mb-0"><i class="bi bi-info-circle"></i> Simulation Details</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Date:</strong> <%= new Date(simulation.createdAt).toLocaleString() %></p>
+                    <p><strong>Email:</strong> <%= simulation.email %></p>
+                </div>
+            </div>
+
+            <hr>
+
+            <h5 class="mb-3">Input Parameters</h5>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="text-muted">Purchase Price</h6>
+                            <h4>€<%= simulation.purchasePrice.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="text-muted">Monthly Rent</h6>
+                            <h4>€<%= simulation.monthlyRent.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card bg-light">
+                        <div class="card-body">
+                            <h6 class="text-muted">Annual Rental Fee</h6>
+                            <h4>€<%= simulation.annualRentalFee.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="mb-3">Calculation Results</h5>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead class="table-emerald">
+                        <tr>
+                            <th>Metric</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Monthly Net Income</strong></td>
+                            <td>€<%= simulation.monthlyNetIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Year 1 Return</strong></td>
+                            <td><span class="badge bg-emerald"><%= simulation.year1Return.toFixed(2) %>%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Year 2 Return</strong></td>
+                            <td><span class="badge bg-emerald"><%= simulation.year2Return.toFixed(2) %>%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Year 3 Return</strong></td>
+                            <td><span class="badge bg-emerald"><%= simulation.year3Return.toFixed(2) %>%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total 3-Year Return</strong></td>
+                            <td><span class="badge bg-dark"><%= simulation.total3YearReturn.toFixed(2) %>%</span></td>
+                        </tr>
+                        <% if (simulation.dataDrivenPrediction !== null && simulation.dataDrivenPrediction !== undefined) { %>
+                            <tr>
+                                <td><strong>Data-Driven Prediction (3-Year)</strong></td>
+                                <td><span class="badge bg-info"><%= simulation.dataDrivenPrediction.toFixed(2) %>%</span></td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+<%- include('../partials/footer') %>
+
